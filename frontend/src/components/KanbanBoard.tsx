@@ -5,9 +5,11 @@ import {
   DndContext,
   DragOverlay,
   PointerSensor,
+  type CollisionDetection,
   useSensor,
   useSensors,
-  closestCorners,
+  rectIntersection,
+  pointerWithin,
   type DragEndEvent,
   type DragStartEvent,
 } from "@dnd-kit/core";
@@ -28,6 +30,27 @@ export const KanbanBoard = () => {
   );
 
   const cardsById = useMemo(() => board?.cards ?? {}, [board]);
+
+  const collisionDetection: CollisionDetection = (args) => {
+    const pointerCollisions = pointerWithin(args).filter(
+      (collision) => collision.id !== args.active.id
+    );
+    const columnCollisions = pointerCollisions.filter(
+      (collision) =>
+        typeof collision.id === "string" && collision.id.startsWith("col-")
+    );
+    if (columnCollisions.length > 0) {
+      return columnCollisions;
+    }
+    if (pointerCollisions.length > 0) {
+      return pointerCollisions;
+    }
+
+    const intersections = rectIntersection(args).filter(
+      (collision) => collision.id !== args.active.id
+    );
+    return intersections;
+  };
 
   const loadBoard = useCallback(async () => {
     setStatus("loading");
@@ -93,13 +116,36 @@ export const KanbanBoard = () => {
     const { active, over } = event;
     setActiveCardId(null);
 
-    if (!over || active.id === over.id) {
+    const activeId = active.id as string;
+    const overId = over?.id as string | undefined;
+
+    const resolvedOverId = (() => {
+      if (overId && overId !== activeId) {
+        return overId;
+      }
+      if (typeof document === "undefined") {
+        return undefined;
+      }
+      const pointerEvent = event.activatorEvent as MouseEvent | PointerEvent;
+      const clientX = pointerEvent?.clientX;
+      const clientY = pointerEvent?.clientY;
+      if (clientX == null || clientY == null) {
+        return undefined;
+      }
+      const targetX = clientX + event.delta.x;
+      const targetY = clientY + event.delta.y;
+      const element = document.elementFromPoint(targetX, targetY);
+      const columnElement = element?.closest<HTMLElement>("[data-column-id]");
+      return columnElement?.dataset.columnId;
+    })();
+
+    if (!resolvedOverId || resolvedOverId === activeId) {
       return;
     }
 
     updateBoard((prev) => ({
       ...prev,
-      columns: moveCard(prev.columns, active.id as string, over.id as string),
+      columns: moveCard(prev.columns, activeId, resolvedOverId),
     }));
   };
 
@@ -217,7 +263,7 @@ export const KanbanBoard = () => {
 
         <DndContext
           sensors={sensors}
-          collisionDetection={closestCorners}
+          collisionDetection={collisionDetection}
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >
