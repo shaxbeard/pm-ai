@@ -1,10 +1,26 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { vi } from "vitest";
 import { AppShell } from "@/components/AppShell";
+import { initialData } from "@/lib/kanban";
 
 describe("AppShell", () => {
   beforeEach(() => {
     window.localStorage.clear();
+    vi.restoreAllMocks();
+    global.fetch = vi.fn().mockImplementation((input, init) => {
+      const method = (init?.method ?? "GET").toUpperCase();
+      const body =
+        method === "PUT" && init?.body
+          ? JSON.parse(init.body as string)
+          : initialData;
+      return Promise.resolve(
+        new Response(JSON.stringify(body), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        })
+      );
+    }) as unknown as typeof fetch;
   });
 
   it("shows the sign-in screen when logged out", async () => {

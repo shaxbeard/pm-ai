@@ -104,19 +104,19 @@ Success criteria
 Part 7: Frontend + Backend
 
 Checklist
-- [ ] Replace frontend demo data with backend API calls
-- [ ] Ensure drag/drop and edits persist
-- [ ] Handle loading/error states simply
-- [ ] Add integration tests covering API-backed flows
+- [x] Replace frontend demo data with backend API calls
+- [x] Ensure drag/drop and edits persist
+- [x] Handle loading/error states simply
+- [x] Add integration tests covering API-backed flows
 
 Tests
-- [ ] Vitest: frontend data and state logic
-- [ ] Playwright: end-to-end flows against running backend
+- [x] Vitest: frontend data and state logic
+- [x] Playwright: end-to-end flows against running backend
 
 Success criteria
-- [ ] Kanban persists via backend
-- [ ] UI remains responsive and correct
-- [ ] Tests pass
+- [x] Kanban persists via backend
+- [x] UI remains responsive and correct
+- [x] Tests pass
 
 Part 8: AI connectivity
 
