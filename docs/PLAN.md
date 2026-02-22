@@ -118,6 +118,10 @@ Success criteria
 - [x] UI remains responsive and correct
 - [x] Tests pass
 
+Notes
+- Drag-and-drop collision detection now prioritizes pointer hits and filters active draggables, with a fallback to DOM hit-testing using pointer delta against elements marked with data-column-id.
+- Open issue: drops into some columns (observed in discovery/review) still fail in automated repro; continuing investigation.
+
 Part 8: AI connectivity
 
 Checklist
