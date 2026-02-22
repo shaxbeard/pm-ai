@@ -1,37 +1,166 @@
 # High level steps for project
 
+This plan expands each phase into concrete checklist items, plus tests and success criteria. All checklists should be kept up to date as work progresses.
+
 Part 1: Plan
 
-Enrich this document to plan out each of these parts in detail, with substeps listed out as a checklist to be checked off by the agent, and with tests and success critieria for each. Also create an AGENTS.md file inside the frontend directory that describes the existing code there. Ensure the user checks and approves the plan.
+Checklist
+- [ ] Expand this plan with detailed steps, tests, and success criteria for each part
+- [ ] Create a frontend/AGENTS.md describing the existing frontend structure and key files
+- [ ] Confirm plan with user before implementation
+
+Tests
+- [ ] None (planning only)
+
+Success criteria
+- [ ] Plan is detailed, unambiguous, and approved by the user
+- [ ] frontend/AGENTS.md exists and reflects the current frontend
 
 Part 2: Scaffolding
 
-Set up the Docker infrastructure, the backend in backend/ with FastAPI, and write the start and stop scripts in the scripts/ directory. This should serve example static HTML to confirm that a 'hello world' example works running locally and also make an API call.
+Checklist
+- [x] Add Dockerfile and docker-related config for running backend + serving static assets
+- [x] Create backend FastAPI app scaffold in backend/
+- [x] Add minimal static HTML served at /
+- [x] Add a minimal API endpoint (e.g., GET /api/health) and confirm it responds
+- [x] Add start/stop scripts for Mac, PC, Linux in scripts/
+
+Tests
+- [x] Manual smoke test: container starts and serves HTML at /
+- [x] Manual smoke test: GET /api/health returns 200 and expected payload
+
+Success criteria
+- [x] Running container serves the HTML page at /
+- [x] API responds successfully inside the container
+- [x] Start/stop scripts work on their target OS
 
 Part 3: Add in Frontend
 
-Now update so that the frontend is statically built and served, so that the app has the demo Kanban board displayed at /. Comprehensive unit and integration tests.
+Checklist
+- [x] Configure frontend static build output for serving by the backend
+- [x] Serve built frontend at /
+- [x] Ensure Kanban demo renders correctly
+- [x] Add/extend unit tests for frontend logic
+- [x] Add/extend integration tests for key UI flows
+
+Tests
+- [x] Frontend unit tests via Vitest
+- [x] Frontend integration tests via Playwright
+
+Success criteria
+- [x] Built frontend is served at /
+- [x] Kanban demo visible and usable
+- [x] Unit + integration tests pass
 
 Part 4: Add in a fake user sign in experience
 
-Now update so that on first hitting /, you need to log in with dummy credentials ("user", "password") in order to see the Kanban, and you can log out. Comprehensive tests.
+Checklist
+- [x] Add login UI gate for / with dummy credentials (user/password)
+- [x] Add logout path returning user to login screen
+- [x] Ensure Kanban is only visible after login
+- [x] Add/extend tests for login/logout and access control
+
+Tests
+- [x] Vitest: auth-related UI logic
+- [x] Playwright: login/logout flows and access gating
+
+Success criteria
+- [x] Unauthenticated users see login screen only
+- [x] Correct credentials allow access to Kanban
+- [x] Logout works and clears access
+- [x] Tests pass
 
 Part 5: Database modeling
 
-Now propose a database schema for the Kanban, saving it as JSON. Document the database approach in docs/ and get user sign off.
+Checklist
+- [ ] Propose SQLite schema covering users, boards, columns, cards
+- [ ] Save schema as JSON in docs/
+- [ ] Document database approach in docs/
+- [ ] Get user sign-off on schema and approach
+
+Tests
+- [ ] None (design only)
+
+Success criteria
+- [ ] JSON schema exists and is documented
+- [ ] User approves schema
 
 Part 6: Backend
 
-Now add API routes to allow the backend to read and change the Kanban for a given user; test this thoroughly with backend unit tests. The database should be created if it doesn't exist.
+Checklist
+- [ ] Implement SQLite initialization (create db if missing)
+- [ ] Add CRUD API routes for board, columns, cards
+- [ ] Support per-user data isolation
+- [ ] Add backend unit tests for routes and data access
+
+Tests
+- [ ] Pytest unit tests for API and DB logic
+
+Success criteria
+- [ ] API supports read/write for Kanban data
+- [ ] Database is created automatically when missing
+- [ ] Backend tests pass
 
 Part 7: Frontend + Backend
 
-Now have the frontend actually use the backend API, so that the app is a proper persistent Kanban board. Test very throughly.
+Checklist
+- [ ] Replace frontend demo data with backend API calls
+- [ ] Ensure drag/drop and edits persist
+- [ ] Handle loading/error states simply
+- [ ] Add integration tests covering API-backed flows
+
+Tests
+- [ ] Vitest: frontend data and state logic
+- [ ] Playwright: end-to-end flows against running backend
+
+Success criteria
+- [ ] Kanban persists via backend
+- [ ] UI remains responsive and correct
+- [ ] Tests pass
 
 Part 8: AI connectivity
 
-Now allow the backend to make an AI call via OpenRouter. Test connectivity with a simple "2+2" test and ensure the AI call is working.
+Checklist
+- [ ] Add backend OpenRouter client
+- [ ] Call model with a simple "2+2" prompt
+- [ ] Log/return basic response for verification
+- [ ] Add a backend test or manual verification step
 
-Part 9: Now extend the backend call so that it always calls the AI with the JSON of the Kanban board, plus the user's question (and conversation history). The AI should respond with Structured Outputs that includes the response to the user and optionaly an update to the Kanban. Test thoroughly.
+Tests
+- [ ] Manual smoke test: AI call returns expected answer
 
-Part 10: Now add a beautiful sidebar widget to the UI supporting full AI chat, and allowing the LLM (as it determines) to update the Kanban based on its Structured Outputs. If the AI updates the Kanban, then the UI should refresh automatically.
+Success criteria
+- [ ] OpenRouter call succeeds with expected response
+
+Part 9: Structured Outputs for Kanban updates
+
+Checklist
+- [ ] Define JSON schema for AI response (message + optional board updates)
+- [ ] Send board JSON, user question, and history to AI
+- [ ] Validate and parse structured output
+- [ ] Add backend tests for parsing and validation
+
+Tests
+- [ ] Pytest unit tests for schema validation and response handling
+
+Success criteria
+- [ ] AI returns structured output matching schema
+- [ ] Parsed updates are valid and safe to apply
+- [ ] Tests pass
+
+Part 10: AI chat UI
+
+Checklist
+- [ ] Add sidebar chat UI to frontend
+- [ ] Send chat to backend and render AI responses
+- [ ] Apply AI-driven Kanban updates and refresh UI
+- [ ] Add UI tests for chat and update flows
+
+Tests
+- [ ] Vitest: chat UI state and reducers
+- [ ] Playwright: full chat flow and board update
+
+Success criteria
+- [ ] Chat works end-to-end
+- [ ] AI updates reflect in Kanban automatically
+- [ ] Tests pass
