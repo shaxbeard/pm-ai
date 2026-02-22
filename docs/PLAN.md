@@ -73,33 +73,33 @@ Success criteria
 Part 5: Database modeling
 
 Checklist
-- [ ] Propose SQLite schema covering users, boards, columns, cards
-- [ ] Save schema as JSON in docs/
-- [ ] Document database approach in docs/
-- [ ] Get user sign-off on schema and approach
+- [x] Propose SQLite schema covering users, boards, columns, cards
+- [x] Save schema as JSON in docs/
+- [x] Document database approach in docs/
+- [x] Get user sign-off on schema and approach
 
 Tests
 - [ ] None (design only)
 
 Success criteria
-- [ ] JSON schema exists and is documented
-- [ ] User approves schema
+- [x] JSON schema exists and is documented
+- [x] User approves schema
 
 Part 6: Backend
 
 Checklist
-- [ ] Implement SQLite initialization (create db if missing)
-- [ ] Add CRUD API routes for board, columns, cards
-- [ ] Support per-user data isolation
-- [ ] Add backend unit tests for routes and data access
+- [x] Implement SQLite initialization (create db if missing)
+- [x] Add CRUD API routes for board, columns, cards
+- [x] Support per-user data isolation
+- [x] Add backend unit tests for routes and data access
 
 Tests
-- [ ] Pytest unit tests for API and DB logic
+- [x] Pytest unit tests for API and DB logic
 
 Success criteria
-- [ ] API supports read/write for Kanban data
-- [ ] Database is created automatically when missing
-- [ ] Backend tests pass
+- [x] API supports read/write for Kanban data
+- [x] Database is created automatically when missing
+- [x] Backend tests pass
 
 Part 7: Frontend + Backend
 

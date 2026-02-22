@@ -1,0 +1,64 @@
+{
+  "dialect": "sqlite",
+  "version": 1,
+  "tables": [
+    {
+      "name": "users",
+      "columns": [
+        { "name": "id", "type": "TEXT", "primaryKey": true },
+        { "name": "username", "type": "TEXT", "unique": true, "nullable": false },
+        { "name": "created_at", "type": "TEXT", "nullable": false }
+      ]
+    },
+    {
+      "name": "boards",
+      "columns": [
+        { "name": "id", "type": "TEXT", "primaryKey": true },
+        { "name": "user_id", "type": "TEXT", "nullable": false },
+        { "name": "title", "type": "TEXT", "nullable": false },
+        { "name": "created_at", "type": "TEXT", "nullable": false }
+      ],
+      "foreignKeys": [
+        {
+          "columns": ["user_id"],
+          "references": { "table": "users", "columns": ["id"] },
+          "onDelete": "CASCADE"
+        }
+      ]
+    },
+    {
+      "name": "columns",
+      "columns": [
+        { "name": "id", "type": "TEXT", "primaryKey": true },
+        { "name": "board_id", "type": "TEXT", "nullable": false },
+        { "name": "title", "type": "TEXT", "nullable": false },
+        { "name": "position", "type": "INTEGER", "nullable": false }
+      ],
+      "foreignKeys": [
+        {
+          "columns": ["board_id"],
+          "references": { "table": "boards", "columns": ["id"] },
+          "onDelete": "CASCADE"
+        }
+      ]
+    },
+    {
+      "name": "cards",
+      "columns": [
+        { "name": "id", "type": "TEXT", "primaryKey": true },
+        { "name": "column_id", "type": "TEXT", "nullable": false },
+        { "name": "title", "type": "TEXT", "nullable": false },
+        { "name": "details", "type": "TEXT", "nullable": false },
+        { "name": "position", "type": "INTEGER", "nullable": false },
+        { "name": "created_at", "type": "TEXT", "nullable": false }
+      ],
+      "foreignKeys": [
+        {
+          "columns": ["column_id"],
+          "references": { "table": "columns", "columns": ["id"] },
+          "onDelete": "CASCADE"
+        }
+      ]
+    }
+  ]
+}
