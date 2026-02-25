@@ -125,16 +125,16 @@ Notes
 Part 8: AI connectivity
 
 Checklist
-- [ ] Add backend OpenRouter client
-- [ ] Call model with a simple "2+2" prompt
-- [ ] Log/return basic response for verification
-- [ ] Add a backend test or manual verification step
+- [x] Add backend OpenRouter client
+- [x] Call model with a simple "2+2" prompt
+- [x] Log/return basic response for verification
+- [x] Add a backend test or manual verification step
 
 Tests
-- [ ] Manual smoke test: AI call returns expected answer
+- [x] Manual smoke test: AI call returns expected answer
 
 Success criteria
-- [ ] OpenRouter call succeeds with expected response
+- [x] OpenRouter call succeeds with expected response
 
 Part 9: Structured Outputs for Kanban updates
 
