@@ -5,9 +5,10 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.staticfiles import StaticFiles
 from openai import OpenAI
-from pydantic import BaseModel
 
+from backend.ai import call_openrouter_chat
 from backend.db import DEFAULT_USER_ID, connect, get_board, get_db_path, init_db, replace_board
+from backend.models import AiChatRequest, AiChatResponse, BoardData
 
 logger = logging.getLogger(__name__)
 
@@ -24,23 +25,6 @@ def call_openrouter_test() -> None:
     )
     message = response.choices[0].message.content
     logger.info("OpenRouter test response: %s", message)
-
-
-class Card(BaseModel):
-    id: str
-    title: str
-    details: str
-
-
-class Column(BaseModel):
-    id: str
-    title: str
-    cardIds: list[str]
-
-
-class BoardData(BaseModel):
-    columns: list[Column]
-    cards: dict[str, Card]
 
 
 def create_app(db_path: Path | None = None) -> FastAPI:
@@ -79,6 +63,23 @@ def create_app(db_path: Path | None = None) -> FastAPI:
 
         with connect(request.app.state.db_path) as conn:
             return replace_board(conn, DEFAULT_USER_ID, payload.model_dump())
+
+    @app.post("/api/ai/chat", response_model=AiChatResponse)
+    def ai_chat(payload: AiChatRequest) -> dict[str, object]:
+        try:
+            response = call_openrouter_chat(
+                payload.board,
+                payload.message,
+                payload.history,
+            )
+        except ValueError as exc:
+            logger.exception("AI response did not match schema")
+            raise HTTPException(status_code=502, detail=str(exc)) from exc
+        except Exception as exc:
+            logger.exception("AI chat failed")
+            raise HTTPException(status_code=500, detail="AI chat failed.") from exc
+
+        return response.model_dump()
 
     app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="static")
     return app

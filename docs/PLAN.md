@@ -139,10 +139,10 @@ Success criteria
 Part 9: Structured Outputs for Kanban updates
 
 Checklist
-- [ ] Define JSON schema for AI response (message + optional board updates)
-- [ ] Send board JSON, user question, and history to AI
-- [ ] Validate and parse structured output
-- [ ] Add backend tests for parsing and validation
+- [x] Define JSON schema for AI response (message + optional board updates)
+- [x] Send board JSON, user question, and history to AI
+- [x] Validate and parse structured output
+- [x] Add backend tests for parsing and validation
 
 Tests
 - [ ] Pytest unit tests for schema validation and response handling
