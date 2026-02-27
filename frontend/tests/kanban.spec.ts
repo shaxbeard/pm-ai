@@ -70,6 +70,20 @@ const mockApi = async (page: Page) => {
       body: JSON.stringify(mockBoard),
     });
   });
+
+  await page.route("**/api/ai/chat", async (route) => {
+    const updatedBoard = {
+      ...mockBoard,
+      columns: mockBoard.columns.map((column, index) =>
+        index === 0 ? { ...column, title: "Next Up" } : column
+      ),
+    };
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ message: "Updated", board: updatedBoard }),
+    });
+  });
 };
 
 const login = async (page: Page) => {
@@ -118,4 +132,12 @@ test("moves a card between columns", async ({ page }) => {
   );
   await page.mouse.up();
   await expect(targetColumn.getByTestId("card-card-1")).toBeVisible();
+});
+
+test("sends an AI chat request", async ({ page }) => {
+  await login(page);
+  await page.getByLabel("Chat input").fill("Rename backlog to next up");
+  await page.getByRole("button", { name: /send/i }).click();
+  await expect(page.getByText("Updated")).toBeVisible();
+  await expect(page.getByDisplayValue("Next Up")).toBeVisible();
 });

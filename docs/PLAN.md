@@ -155,16 +155,16 @@ Success criteria
 Part 10: AI chat UI
 
 Checklist
-- [ ] Add sidebar chat UI to frontend
-- [ ] Send chat to backend and render AI responses
-- [ ] Apply AI-driven Kanban updates and refresh UI
-- [ ] Add UI tests for chat and update flows
+- [x] Add sidebar chat UI to frontend
+- [x] Send chat to backend and render AI responses
+- [x] Apply AI-driven Kanban updates and refresh UI
+- [x] Add UI tests for chat and update flows
 
 Tests
 - [ ] Vitest: chat UI state and reducers
-- [ ] Playwright: full chat flow and board update
+- [x] Playwright: full chat flow and board update
 
 Success criteria
-- [ ] Chat works end-to-end
-- [ ] AI updates reflect in Kanban automatically
+- [x] Chat works end-to-end
+- [x] AI updates reflect in Kanban automatically
 - [ ] Tests pass

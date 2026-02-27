@@ -50,6 +50,22 @@ def test_parse_ai_response_rejects_invalid_payload() -> None:
     parse_ai_response(content)
 
 
+def test_parse_ai_response_rejects_invalid_json() -> None:
+  with pytest.raises(ValueError, match="JSON"):
+    parse_ai_response("not valid json {{{")
+
+
+def test_build_ai_messages_with_no_history() -> None:
+  board = sample_board()
+  messages = build_ai_messages(board, "What should I do next?", [])
+
+  assert len(messages) == 2
+  assert messages[0]["role"] == "system"
+  assert messages[1]["role"] == "user"
+  assert "What should I do next?" in messages[1]["content"]
+  assert "Current board JSON" in messages[1]["content"]
+
+
 def test_build_ai_messages_includes_history_and_board() -> None:
   board = sample_board()
   history = [AiHistoryMessage(role="user", content="What is next?")]
