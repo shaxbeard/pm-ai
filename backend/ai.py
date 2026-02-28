@@ -63,7 +63,7 @@ def call_openrouter_chat(
   if not api_key:
     raise RuntimeError("OPENROUTER_API_KEY is not set.")
 
-  client = OpenAI(api_key=api_key, base_url="https://openrouter.ai/api/v1")
+  client = OpenAI(api_key=api_key, base_url="https://openrouter.ai/api/v1", timeout=30.0)
   messages = build_ai_messages(board, user_message, history)
   response = client.chat.completions.create(
     model="openai/gpt-oss-120b",

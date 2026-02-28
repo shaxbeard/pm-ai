@@ -86,6 +86,7 @@ export const KanbanBoard = () => {
   }, [loadBoard]);
 
   const saveBoard = useCallback(async (nextBoard: BoardData) => {
+    setError("");
     try {
       const response = await fetch("/api/board", {
         method: "PUT",

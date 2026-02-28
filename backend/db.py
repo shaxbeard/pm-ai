@@ -133,6 +133,7 @@ def init_db(db_path: Path) -> None:
       )
       """
     )
+    seed_default_data(conn)
 
 
 def ensure_user(
@@ -206,7 +207,6 @@ def insert_board_data(
 
 def get_board(conn: sqlite3.Connection, user_id: str) -> dict[str, Any]:
   board_id = ensure_board(conn, user_id)
-  seed_default_data(conn)
 
   columns = conn.execute(
     "SELECT id, title FROM \"columns\" WHERE board_id = ? ORDER BY position",

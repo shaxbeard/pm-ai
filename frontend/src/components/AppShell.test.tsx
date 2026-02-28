@@ -2,7 +2,14 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { vi } from "vitest";
 import { AppShell } from "@/components/AppShell";
-import { initialData } from "@/lib/kanban";
+import type { BoardData } from "@/lib/kanban";
+
+const mockBoard: BoardData = {
+  columns: [
+    { id: "col-backlog", title: "Backlog", cardIds: [] },
+  ],
+  cards: {},
+};
 
 describe("AppShell", () => {
   beforeEach(() => {
@@ -13,7 +20,7 @@ describe("AppShell", () => {
       const body =
         method === "PUT" && init?.body
           ? JSON.parse(init.body as string)
-          : initialData;
+          : mockBoard;
       return Promise.resolve(
         new Response(JSON.stringify(body), {
           status: 200,

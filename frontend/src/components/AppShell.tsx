@@ -40,6 +40,7 @@ export const AppShell = () => {
       setError("Invalid credentials.");
       return;
     }
+    window.localStorage.setItem(AUTH_KEY, "true");
     setIsAuthed(true);
     setFormState(initialFormState);
     setError("");
